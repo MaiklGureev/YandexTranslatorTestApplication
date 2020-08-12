@@ -1,0 +1,11 @@
+package com.gureevinc.mvp_androidapplication.login;
+
+import com.gureevinc.mvp_androidapplication._data.User;
+
+public interface LoginContract {
+
+    interface View{
+        void showMessageAboutLoginAndPassword(String message);
+    }
+    interface Presenter{
+  

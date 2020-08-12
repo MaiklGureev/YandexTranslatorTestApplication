@@ -1,0 +1,6 @@
+package com.gureevinc.mvp_androidapplication.login;
+
+import com.gureevinc.mvp_androidapplication.Repository;
+import com.gureevinc.mvp_androidapplication._data.User;
+
+public class LoginPresenter implement
