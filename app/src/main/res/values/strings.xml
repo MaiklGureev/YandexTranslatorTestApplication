@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">YandexTranslatorTestApplication</string>
+    <string name="translate">Перевести</string>
+    <string name="history">История переводов</string>
+    <string name="translator">Yandex Translate</string>
+    <string name="save">Сохранить в историю переводов</string>
+    <string name="switchText">⇔</string>
+    <string name="defineLanguage">Определить язык</string>
+    <string name="insertError">Запись в БД прошла неудачно!</string>
+    <string name="translateError">Не удалость перевести текст!</string>
+    <string name="defineLanguageError">Не удалось определить язык!</string>
+    <string name="initSpinnersError">Ошибка при загрузке списка языков!</string>
+
 </resources>
