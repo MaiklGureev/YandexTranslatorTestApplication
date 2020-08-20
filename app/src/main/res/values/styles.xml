@@ -12,4 +12,11 @@
         <item name="android:elevation">@dimen/cardview_default_elevation</item>
     </style>
 
+    <style name="AlertDialogTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:elevation">@dimen/cardview_default_elevation</item>
+    </style>
+
 </resources>

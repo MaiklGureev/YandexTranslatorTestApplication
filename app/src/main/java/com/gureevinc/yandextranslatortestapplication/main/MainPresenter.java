@@ -1,12 +1,10 @@
 package com.gureevinc.yandextranslatortestapplication.main;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.gureevinc.yandextranslatortestapplication.AlertDialogHelper;
 import com.gureevinc.yandextranslatortestapplication.DataProcessingTools;
 import com.gureevinc.yandextranslatortestapplication.R;
 import com.gureevinc.yandextranslatortestapplication.Repository;
@@ -17,6 +15,7 @@ import com.gureevinc.yandextranslatortestapplication.network.POJOs.ListLanguages
 import com.gureevinc.yandextranslatortestapplication.network.POJOs.ListLanguages.LanguagesResponsePOJO;
 import com.gureevinc.yandextranslatortestapplication.network.POJOs.Translate.TranslateRequestPOJO;
 import com.gureevinc.yandextranslatortestapplication.network.POJOs.Translate.TranslateResponsePOJO;
+import com.gureevinc.yandextranslatortestapplication.savedHistoryList.SavedHistoryAdapter;
 import com.gureevinc.yandextranslatortestapplication.sqlite.TranslationRecord;
 
 import java.util.ArrayList;
@@ -30,12 +29,17 @@ public class MainPresenter implements MainContract.Presenter {
 
     private MainContract.View view;
     private Repository repository;
+
     private List<LanguagesResponsePOJO.Languages> languagesList = new ArrayList<>();
     private List<String> languagesCodesList = new ArrayList<>();
+    private List<TranslationRecord> translationRecordList = new ArrayList<>();
+
+    private SavedHistoryAdapter savedHistoryAdapter;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
         repository = Repository.getInstance(view.getActivity().getApplicationContext());
+
     }
 
     public void translate() {
@@ -101,6 +105,13 @@ public class MainPresenter implements MainContract.Presenter {
                 }
 
                 @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    String message = view.getActivity().getString(R.string.insertSuccess);
+                    view.showLongToast(message);
+                }
+
+                @Override
                 protected void onCancelled() {
                     super.onCancelled();
                     String message = view.getActivity().getString(R.string.insertError);
@@ -127,22 +138,16 @@ public class MainPresenter implements MainContract.Presenter {
                     @Override
                     public void onResponse(Call<DetectLanguageResponsePOJO> call, Response<DetectLanguageResponsePOJO> response) {
                         if (response.code() == 200) {
+
                             String languageCode = response.body().getLanguageCode();
 
-                            int translatedIdLanguageCode = view.getTranslatedLanguageSpinner().getSelectedItemPosition();
                             int currentIdLanguageCode = view.getCurrentLanguageSpinner().getSelectedItemPosition();
                             int languageId = DataProcessingTools.getLanguageIdByCode(languageCode, languagesList);
 
-                            Log.d("defineLangAndTr", "onResponse: translatedIdLanguageCode" + translatedIdLanguageCode);
-                            Log.d("defineLangAndTr", "onResponse: currentIdLanguageCode" + currentIdLanguageCode);
-                            Log.d("defineLangAndTr", "onResponse: languageId" + translatedIdLanguageCode);
-
                             translate();
-                            if(currentIdLanguageCode!=languageId){
+                            if (currentIdLanguageCode != languageId) {
                                 view.getCurrentLanguageSpinner().setSelection(languageId);
                             }
-
-
 
                         } else {
                             String message = view.getActivity().getString(R.string.defineLanguageError);
@@ -152,9 +157,65 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onFailure(Call<DetectLanguageResponsePOJO> call, Throwable t) {
-
+                        String message = view.getActivity().getString(R.string.defineLanguageError);
+                        view.showLongToast(message);
                     }
                 });
+    }
+
+    @Override
+    public void showAlertDialogWithTranslatedHistory() {
+        @SuppressLint("StaticFieldLeak") AsyncTask loadTranslatedHistoryAsyncTask = new AsyncTask() {
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                translationRecordList = repository.getRoomDB().recordDAO().getAllTranslationRecords();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                AlertDialogHelper.showRecordsHistory(view.getActivity(),
+                        view.getActivity().getLayoutInflater(),
+                        translationRecordList, MainPresenter.this);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                String message = view.getActivity().getString(R.string.getRecordsError);
+                view.showLongToast(message);
+            }
+        };
+
+        loadTranslatedHistoryAsyncTask.execute();
+    }
+
+    @Override
+    public void deleteTranslatedRecord(final TranslationRecord translationRecord) {
+        @SuppressLint("StaticFieldLeak") AsyncTask deleteTranslatedRecordAsyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                repository.getRoomDB().recordDAO().deleteRecord(translationRecord);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                String message = view.getActivity().getString(R.string.deleteSuccess);
+                view.showLongToast(message);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                String message = view.getActivity().getString(R.string.deleteError);
+                view.showLongToast(message);
+            }
+        };
+        deleteTranslatedRecordAsyncTask.execute();
     }
 
     @Override
@@ -178,6 +239,9 @@ public class MainPresenter implements MainContract.Presenter {
 
                                 view.getCurrentLanguageSpinner().setSelection(60);
                                 view.getTranslatedLanguageSpinner().setSelection(3);
+                            } else if (response.code() == 401) {
+                                String message = view.getActivity().getString(R.string.incorrectedTocken);
+                                view.showLongToast(message);
                             } else {
                                 view.showLongToast(String.valueOf(response.code()));
                             }
@@ -195,7 +259,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void switchLanguageAndTranslate() {
         switchLanguages();
-        if (!view.getTranslatedText().isEmpty()){
+        if (!view.getTranslatedText().isEmpty()) {
             view.setTextForTranslation(view.getTranslatedText());
             view.setTranslatedText("");
             defineLanguageAndTranslate();

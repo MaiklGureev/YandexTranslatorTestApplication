@@ -6,9 +6,20 @@
     <string name="save">Сохранить в историю переводов</string>
     <string name="switchText">⇔</string>
     <string name="defineLanguage">Определить язык</string>
-    <string name="insertError">Запись в БД прошла неудачно!</string>
+    <string name="insertSuccess">Сохранено!</string>
+    <string name="getRecordsError">Записи из БД не получены!</string>
+    <string name="deleteError">Не удалось удалить запись из БД!</string>
     <string name="translateError">Не удалость перевести текст!</string>
     <string name="defineLanguageError">Не удалось определить язык!</string>
     <string name="initSpinnersError">Ошибка при загрузке списка языков!</string>
+    <string name="exit">Закрыть приложение</string>
+    <string name="questionDeleteRecode">Удалить запись?</string>
+    <string name="originaLanguage">Исходный язык: </string>
+    <string name="translatedLanguage">Язык перевода: </string>
+    <string name="listOfRecordsIsEmpty">Список пуст.</string>
+    <string name="close">Закрыть</string>
+    <string name="incorrectedTocken">IAM-токен, необходимый для аутентификации устарел</string>
+    <string name="insertError">Запись в БД прошла неудачно!</string>
+    <string name="deleteSuccess">Удалено!</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.gureevinc.yandextranslatortestapplication.network.NetworkService;
-import com.gureevinc.yandextranslatortestapplication.sqlite.DbHelper;
 import com.gureevinc.yandextranslatortestapplication.sqlite.RoomDB;
 
 import static com.gureevinc.yandextranslatortestapplication.StaticVariables.DB_NAME;

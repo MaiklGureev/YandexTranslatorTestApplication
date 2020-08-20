@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataProcessingTools {
+
+    //разбиение целой строки на строчки по знаку переноса
     public static List<String> splitText(String text) {
         List<String> stringList = new ArrayList<>();
         String[] strings = text.split("\n");
@@ -15,6 +17,7 @@ public class DataProcessingTools {
         return stringList;
     }
 
+    //генерация списка кодов из пришедшего списка языков
     public static List<String> getLanguagesCods(List<LanguagesResponsePOJO.Languages> languagesList) {
         List<String> stringList = new ArrayList<>();
 
@@ -24,6 +27,7 @@ public class DataProcessingTools {
         return stringList;
     }
 
+    //получение id языкового кода из списка всех языковых кодов
     public static int getLanguageIdByCode(String languageCode, List<LanguagesResponsePOJO.Languages> languagesList){
         int id= -1;
         for (int a = 0; a<languagesList.size();a++) {
