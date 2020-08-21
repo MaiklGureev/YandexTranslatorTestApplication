@@ -14,7 +14,7 @@
     <string name="initSpinnersError">Ошибка при загрузке списка языков!</string>
     <string name="exit">Закрыть приложение</string>
     <string name="questionDeleteRecode">Удалить запись?</string>
-    <string name="originaLanguage">Исходный язык: </string>
+    <string name="originalLanguage">Исходный язык: </string>
     <string name="translatedLanguage">Язык перевода: </string>
     <string name="listOfRecordsIsEmpty">Список пуст.</string>
     <string name="close">Закрыть</string>

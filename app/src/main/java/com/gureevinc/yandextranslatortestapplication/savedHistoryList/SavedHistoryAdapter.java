@@ -60,7 +60,7 @@ public class SavedHistoryAdapter extends BaseAdapter {
         MaterialTextView originalText = view.findViewById(R.id.originalTextTextView);
         MaterialTextView translatedText = view.findViewById(R.id.translatedTextView);
 
-        originalLanguage.setText(context.getString(R.string.originaLanguage) + translationRecords.get(position).getOriginalLanguage());
+        originalLanguage.setText(context.getString(R.string.originalLanguage) + translationRecords.get(position).getOriginalLanguage());
         translatedLanguage.setText(context.getString(R.string.translatedLanguage) + translationRecords.get(position).getTranslatedLanguage());
         originalText.setText(translationRecords.get(position).getOriginalText());
         translatedText.setText(translationRecords.get(position).getTranslatedText());
