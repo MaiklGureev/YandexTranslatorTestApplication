@@ -1,6 +1,6 @@
 # YandexTranslatorTestApplication
 
-Переводчик использующий Yandex Translation API v2.
+Android приложение переводчик использующий Yandex Translation API v2.
 
 Dependencies: retrofit2, room, material design.
 
